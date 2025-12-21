@@ -33,13 +33,13 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello from Modern Express!');
+  res.send('Hello from Master Service!');
 });
 
 // --- SERVER STARTUP & GRACEFUL SHUTDOWN ---
 const server = app.listen(PORT, () => {
   logger.info(`Env is ${process.env.NODE_ENV}`);
-  logger.info(`Server running on port ${PORT}`);
+  logger.info(`Master Server running on port ${PORT}`);
   logger.info(`Health check available at http://localhost:${PORT}/health`);
 });
 
