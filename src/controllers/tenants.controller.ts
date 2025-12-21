@@ -1,20 +1,16 @@
 import type { NextFunction, Request, Response } from "express";
 import { HTTP_CODES } from "../constants/httpCodes.js";
+import { parseQuery } from "../helpers/general.js";
 import { getAllTenants, getTenantData } from "../services/tenants.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getAllTenantsController = asyncHandler(
-	async (_req: Request, res: Response, _next: NextFunction) => {
-		const result = await getAllTenants();
+	async (req: Request, res: Response, _next: NextFunction) => {
+		const result = await getAllTenants(parseQuery(req));
 		res.status(HTTP_CODES.OK).json({
 			success: true,
-			pagination: {
-				page: 1,
-				limit: 10,
-				total: result.length,
-				pages: 1,
-			},
-			data: result,
+			pagination: result.pagination,
+			data: result.data,
 		});
 	},
 );
@@ -22,7 +18,7 @@ export const getAllTenantsController = asyncHandler(
 export const getTenantController = asyncHandler(
 	async (req: Request, res: Response, _next: NextFunction) => {
 		const { id } = req.params;
-		const result = await getTenantData(id);
+		const result = await getTenantData(id, parseQuery(req));
 		if (!result) {
 			return res.status(HTTP_CODES.NOT_FOUND).json({
 				success: false,
