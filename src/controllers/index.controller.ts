@@ -11,6 +11,7 @@ export const healthCheckController = asyncHandler(
 			data: {
 				status: "UP",
 				uptime: process.uptime(),
+				now: Date.now(),
 				timestamp: new Date().toISOString(),
 			},
 		});
@@ -25,7 +26,15 @@ export const isConnectedController = asyncHandler(
 		res.status(HTTP_CODES.OK).json({
 			success: true,
 			data: {
-				tenantService: tenantResponse.data,
+				health: {
+					status: "UP",
+					uptime: process.uptime(),
+					now: Date.now(),
+					timestamp: new Date().toISOString(),
+				},
+				servicesConnected: {
+					tenantService: tenantResponse.data,
+				},
 			},
 		});
 	},
